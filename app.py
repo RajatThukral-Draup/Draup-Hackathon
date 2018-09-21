@@ -33,21 +33,21 @@ def about():
 
 
 # Articles
-@app.route('/articles')
-def articles():
+@app.route('/uploads')
+def uploads():
     # Create cursor
     cur = mysql.connection.cursor()
 
     # Get articles
-    result = cur.execute("SELECT * FROM articles")
+    result = cur.execute("SELECT * FROM upload_data")
 
     articles = cur.fetchall()
 
     if result > 0:
-        return render_template('articles.html', articles=articles)
+        return render_template('uploads.html', uploads=articles)
     else:
         msg = 'No Articles Found'
-        return render_template('articles.html', msg=msg)
+        return render_template('uploads.html', msg=msg)
     # Close connection
     cur.close()
 
@@ -176,14 +176,14 @@ def dashboard():
     cur = mysql.connection.cursor()
 
     # Get articles
-    result = cur.execute("SELECT * FROM articles")
+    result = cur.execute("SELECT * FROM upload_data")
 
     articles = cur.fetchall()
 
     if result > 0:
-        return render_template('dashboard.html', articles=articles)
+        return render_template('dashboard.html', uploads=articles)
     else:
-        msg = 'No Articles Found'
+        msg = 'No Data Found'
         return render_template('dashboard.html', msg=msg)
     # Close connection
     cur.close()

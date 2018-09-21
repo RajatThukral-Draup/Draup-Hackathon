@@ -1,17 +1,7 @@
 {% extends 'layout.html' %}
 
 {% block body %}
-<div class="col-lg-8">
-
-  <br>  <h1>Upload Options</h1>
-  <br>
-  <button class="btn btn-primary" type="button">Upload Excel</button>
-  <button class="btn btn-success" type="button">Upload CSV</button>
-  <button class="btn btn-warning" type="button">Use Website</button>
-  <button class="btn btn-danger" type="button">Upload PDF</button>
-</div>
-<div class="col-lg-4">
-<h1>Latest User Uploads</h1>
+  <h1>Latest User Uploads</h1>
   <ul class="list-group">
     {% for upload in uploads %}
       <li class="list-group-item">
@@ -24,5 +14,4 @@
       </li>
     {% endfor %}
   </ul>
-  </div>
 {% endblock %}
