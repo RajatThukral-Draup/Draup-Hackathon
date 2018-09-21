@@ -1,0 +1,184 @@
+{% block content %}
+{% from "flask_user/_macros.html" import render_field, render_checkbox_field, render_submit_field %}
+<!doctype html>
+<html>
+<head>
+    <title>emf_app </title>
+    <script type="text/javascript" src="{{url_for ('static', filename = "js/jquery-3.2.1.min.js")}}"></script>
+    <script>
+    $(document).ready(function () {
+        $(".fa-times").click(function(){
+            $(".sidebar_menu").addClass("hide_menu")
+            $(".toggle_menu").addClass("opacity_one")
+        });
+
+        $(".toggle_menu").click(function(){
+            $(".sidebar_menu").removeClass("hide_menu")
+            $(".toggle_menu").removeClass("opacity_one")
+        });
+    });
+    </script>
+    <link rel="stylesheet" type="text/css" href="{{url_for ('static', filename = "css/bootstrap.min.css")}}">
+    <link rel="stylesheet" type="text/css" href="{{url_for ('static', filename = "css/font-awesome.min.css")}}">
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans|Roboto" rel="stylesheet">
+    <style>
+    *{
+        margin: 0;
+        padding: 0;
+        text-decoration: none;
+        list-style: none;
+    }
+    #wrapper{
+        background-image : url('http://www.rudebaguette.com/assets/crowdfunding.jpg');
+        background-repeat: no-repeat;
+        background-size: cover;
+    }
+    #main{
+        text-align: center;
+        padding-top: 350px;
+    }
+    .toggle_menu{
+        position: fixed;
+        padding: 15px 20px 15px 15px;
+        margin-top: 70px;
+        color : white;
+        cursor: pointer;
+        background-color: #648B79;
+        z-index: 1000000;
+        font-size: 2em;
+    }
+    .sidebar_menu{
+        position: fixed;
+        width: 250px;
+        margin-left: 0px;
+        overflow: hidden;
+        height: 100vh;
+        max-height: 100vh;
+        background-color: rgba(17, 17, 17, 0.9);
+        opacity: 0.9;
+        transition: all 0.3s ease-in-out;
+    }
+    .fa-times{
+        right: 5px;
+        top: 10px;
+        opacity: 0.7;
+        cursor: pointer;
+        position: absolute;
+        color: white;
+        transition: all 0.3s ease-in-out;
+    }
+    .fa-times:hover{
+        opacity: 1;
+    }
+    .boxed-item{
+        font-family: 'Open Sans', sans-serif;
+        font-weight: 200;
+        padding: 10px 20px;
+        display: inline-block;
+        border: solid 2px white;
+        box-sizing: border-box;
+        font-size: 22px;
+        color: white;
+        text-align: center;
+        margin-top: 70px;
+    }
+    .logo_bold{
+        font-weight: 800;
+    }
+    .navigation_selection{
+        margin: 20px 0;
+        display: block;
+        width: 200px;
+        margin-left: 25px;
+        list-style-type: none;
+    }
+    .navigation_item{
+        font-weight: 200;
+        font-family: 'Open Sans', sans-serif;
+        font-style: bold;
+        padding: 12px 0;
+        box-sizing: border-box;
+        font-size: 14px;
+        color: white;
+        border-bottom: solid 1px #D8D8D8;
+        transition: all 0.3s ease-in-out;
+        cursor: pointer;
+    }
+    .navigation_item:hover{
+        color: #3498DB;
+        border-bottom:  2px solid #3498DB;
+    }
+    .container{
+        text-align: center;
+        padding-top: 100px;
+    }
+    .hide_menu{
+        margin-left: -250px;
+    }
+    .opacity_one{
+        opacity: 1;
+        transition: all 0.3s ease-in-out;
+    }
+    .user{
+        color: white;
+        font-family: 'Open Sans';
+    }
+    .main_area{
+        width: 900px;
+        height: 505px;
+        padding-top: 50px;
+        padding-left: 50px;
+        background-color: #F5F5F5;
+        opacity: 0.95;
+        margin-left: 260px;
+        margin-top: 50px;
+    }
+    .text-align{
+        text-align:justify;
+        margin-top: 50px;
+        font-size: 20px;
+    }
+    .item:hover{
+        color: #3498DB;
+        cursor: pointer;
+    }
+
+    </style>
+</head>
+<body id ="wrapper">
+
+
+    <i class="fa fa-bars toggle_menu"></i>
+
+    <div class="sidebar_menu">
+    <i class="fa fa-times"></i>
+        <center>
+            <a href="#"><h2 class="boxed-item" > LV <span class="logo_bold" > EMF </span></h2></a>
+        </center>
+        <br/>
+        <a class="user"> Welcome, {{ current_user.username }} </a>
+    <ul class="navigation_selection">
+        <li class="navigation_item" onclick=location.href="../{{ url_for('index') }}"> Home </li>
+        <li class="navigation_item" onclick=location.href="../{{ url_for('upload') }}"> EMF </li>
+        <li class="navigation_item" onclick=location.href="../{{ url_for('about') }}"> Documentation </li>
+        <li class="navigation_item" onclick=location.href="../{{ url_for('file') }}"> File Constraints </li>
+        <li class="navigation_item" onclick=location.href="{{ url_for('user.profile') }}"> User Profile </li>
+        <li class="navigation_item" onclick=location.href="{{ url_for('user.logout') }}">Sign Out  </li>
+    </ul>
+</div>
+
+<div class="main_area">
+    <h1>{%trans%}Change username{%endtrans%}</h1>
+
+<form action="" method="POST" class="form" role="form">
+    {{ form.hidden_tag() }}
+    {{ render_field(form.new_username, tabindex=10) }}
+    {{ render_field(form.old_password, tabindex=20) }}
+    {{ render_submit_field(form.submit, tabindex=90) }}
+</form>
+
+{% endblock %}
+
+</div>
+</body>
+</html>
