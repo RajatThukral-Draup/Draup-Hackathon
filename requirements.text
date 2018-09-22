@@ -1,11 +1,13 @@
 APScheduler==3.5.1
-apturl==0.5.2
 argcomplete==1.8.1
 asn1crypto==0.24.0
 bcrypt==3.1.4
 beautifulsoup4==4.6.0
+<<<<<<< HEAD
 blinker==1.4
 Brlapi==0.6.5
+=======
+>>>>>>> 9828657ced52ae54bccab4842f68627564c0df80
 bs4==0.0.1
 certifi==2018.4.16
 cffi==1.11.5
