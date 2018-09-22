@@ -1,16 +1,27 @@
 {% extends 'layout.html' %}
 
 {% block body %}
+
   <h1>Latest User Uploads</h1>
+<div class="md-form active-purple-2 mb-3">
+  <input class="form-control" type="text" placeholder="Search in uploads" aria-label="Search">
+</div>
+<br>
   <ul class="list-group">
     {% for upload in uploads %}
       <li class="list-group-item">
-        <h3>{{upload.email}}</h3>
-        <p>{{upload.highlighted_text}}</p> <br>
-        <b>Label : {{upload.tag}}</b> <br>
-        <p>Subvertical : {{upload.subvertical}}</p> <br>
-        <p>Vertical : {{upload.vertical}}</p> <br>
-        <p>Organisation Name: {{upload.organisation_name}}</p>
+        <h3><span class="glyphicon glyphicon-envelope"></span>&nbsp;&nbsp; {{upload.email}}</h3>
+        <span class="pull-right">
+          <button class="btn btn-primary"><span class="glyphicon glyphicon-edit">Edit </span></button>
+          <button class="btn btn-success"><span class="glyphicon glyphicon-trash">Remove</span></button>
+        </span>
+        <h5><span class="label label-danger">Highlighted Text</span></h5>
+          <b><em>{{upload.highlighted_text}}</em></b><br>
+        <br>
+        <p><span class="label label-info">Tag</span> <b>&nbsp;&nbsp;{{upload.tag}}</b></p> <br>
+        <p><span class="label label-success">Subvertical </span><b>&nbsp;&nbsp;{{upload.subvertical}}</b></p> <br>
+        <p><span class="label label-warning">Vertical</span><b>&nbsp;&nbsp;{{upload.vertical}}</b></p> <br>
+        <p><span class="label label-primary">Organisation Name</span><b>&nbsp;&nbsp;{{upload.organisation_name}}</b></p>
       </li>
     {% endfor %}
   </ul>

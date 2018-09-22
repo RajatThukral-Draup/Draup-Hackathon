@@ -3,6 +3,7 @@
   <head>
     <meta charset="utf-8">
     <title>DraupHackathon</title>
+
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
   </head>
   <body>
@@ -10,12 +11,20 @@
     <div class="container">
       {% include 'includes/_messages.html' %}
       {% block body %}{% endblock %}
-    </div>
+    </div> <!-- Latest compiled and minified CSS -->
+
+
+<!-- jQuery library -->
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+
+<!-- Latest compiled JavaScript -->
 
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
     <script src="//cdn.ckeditor.com/4.6.2/basic/ckeditor.js"></script>
     <script type="text/javascript">
       CKEDITOR.replace('editor')
     </script>
+    <script type="text/javascript" src="../static/js/index.js"></script>
   </body>
 </html>

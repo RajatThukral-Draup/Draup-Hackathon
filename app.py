@@ -1,10 +1,11 @@
 
-from flask import Flask, render_template, flash, redirect, url_for, session, request, logging
+from flask import Flask, render_template, flash, redirect, url_for, session, request, logging, jsonify
 # from data import Articles
 from flask_mysqldb import MySQL
 from wtforms import Form, StringField, TextAreaField, PasswordField, validators
 from passlib.hash import sha256_crypt
 from functools import wraps
+from datetime import datetime, date
 
 app = Flask(__name__)
 
@@ -112,14 +113,14 @@ def register():
 def login():
     if request.method == 'POST':
         # Get Form Fields
-        username = request.form['username']
+        email = request.form['email']
         password_candidate = request.form['password']
 
         # Create cursor
         cur = mysql.connection.cursor()
 
         # Get user by username
-        result = cur.execute("SELECT * FROM users WHERE username = %s", [username])
+        result = cur.execute("SELECT * FROM users WHERE email = %s", [email])
 
         if result > 0:
             # Get stored hash
@@ -130,7 +131,7 @@ def login():
             if sha256_crypt.verify(password_candidate, password):
                 # Passed
                 session['logged_in'] = True
-                session['username'] = username
+                session['email'] = email
 
                 flash('You are now logged in', 'success')
                 return redirect(url_for('dashboard'))
@@ -263,7 +264,7 @@ def edit_article(id):
 
     return render_template('edit_article.html', form=form)
 
-
+# from bson import json_utils
 # Delete Article
 @app.route('/delete_article/<string:id>', methods=['POST'])
 @is_logged_in
@@ -283,7 +284,53 @@ def delete_article(id):
     flash('Article Deleted', 'success')
 
     return redirect(url_for('dashboard'))
+data = {
+	"id":6,
+	"vertical":"vi",
+	"subvertical":"sub",
+	"organization_name":"hes",
+	"highlighted_text":"Hey man nice to meet you.",
+	"tag":"up",
+	"email":"rajatthukral@zinnov.com",
+	"last_modified":"2018-11-10 12:12:12"
+}
+import json
+# data_ = json.loads(data)
 
+
+def json_serial(obj):
+    """JSON serializer for objects not serializable by default json code"""
+
+    if isinstance(obj, (datetime, date)):
+        return obj.isoformat()
+    raise TypeError ("Type %s not serializable" % type(obj))
+
+
+@app.route('/insert_record/',methods=['POST'])
+# @is_logged_in
+def insert_record():
+    data=request.get_json()
+    cur = mysql.connection.cursor()
+    cur.execute("INSERT INTO upload_data (vertical, subvertical, organisation_name, highlighted_text, tag, email, last_modified) VALUES (%s ,%s ,%s ,%s ,%s ,%s , %s)",(data['vertical'],data['subvertical'],data['organization_name'],data['highlighted_text'],data['tag'],data['email'],data['last_modified']))
+    cur.connection.commit()
+    cur.close()
+    flash('Record Inserted','success')
+    return redirect(url_for('uploads'))
+
+@app.route('/search/',methods=['POST'])
+# @is_logged_in
+def search():
+    highlighted_text=request.args.get('highlighted_text')
+    tag=request.args.get('tag')
+    organisation_name=request.args.get('organisation_name')
+    data['highlighted_text']="%"+highlighted_text+"%"
+    cur = mysql.connection.cursor()
+    result_tag = cur.execute("SELECT * FROM upload_data where tag=%s or organisation_name=%s or highlighted_text LIKE %s",(tag,organisation_name,highlighted_text))
+    results =cur.fetchall()
+    cur.connection.commit()
+    cur.close()
+    flash('Search completed','success')
+    return json.dumps(results,default=json_serial)
 
 if __name__ == '__main__':
     app.secret_key = 'secret123'
