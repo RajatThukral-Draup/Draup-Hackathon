@@ -317,20 +317,28 @@ def insert_record():
     flash('Record Inserted','success')
     return redirect(url_for('uploads'))
 
-@app.route('/search/',methods=['POST'])
+
+@app.route('/search',methods=['POST'])
 # @is_logged_in
 def search():
-    highlighted_text=request.args.get('highlighted_text')
-    tag=request.args.get('tag')
-    organisation_name=request.args.get('organisation_name')
-    data['highlighted_text']="%"+highlighted_text+"%"
+    if (request.method == 'POST'):
+        search_query = request.form['search_query']
+    else:
+        search_query = session.get('movie_input')
+    print (search_query)
+    # highlighted_text=request.args.get('highlighted_text')
+    # tag=request.args.get('tag')
+    # organisation_name=request.args.get('organisation_name')
+    # data['highlighted_text']="%"+highlighted_text+"%"
     cur = mysql.connection.cursor()
-    result_tag = cur.execute("SELECT * FROM upload_data where tag=%s or organisation_name=%s or highlighted_text LIKE %s",(tag,organisation_name,highlighted_text))
+    result_tag = cur.execute("SELECT * FROM upload_data where tag=%s or organisation_name=%s or highlighted_text LIKE %s",(search_query,search_query,search_query))
     results =cur.fetchall()
     cur.connection.commit()
     cur.close()
-    flash('Search completed','success')
-    return json.dumps(results,default=json_serial)
+    results_ = json.dumps(results,default=json_serial)
+    print (results_)
+    return render_template('search.html',uploads=results_,search_query=search_query)
+
 
 if __name__ == '__main__':
     app.secret_key = 'secret123'
